@@ -9,16 +9,14 @@ import "@acala-network/contracts/utils/AcalaTokens.sol";
 contract Trader {
     constructor() payable {}
 
-    function trade(address tokenA, address tokenB) external returns (bool) {
-        uint256 price = IOracle(ORACLE).getPrice(tokenA);
-        if (price < 1e18) {
-            revert("price too low");
-        }
-
+    function trade(
+        address tokenA,
+        address tokenB,
+        uint amount
+    ) external returns (bool) {
         address[] memory path = new address[](2);
         path[0] = tokenA;
         path[1] = tokenB;
-        uint256 amount = address(this).balance / 1_000_000;
         return IDEX(DEX).swapWithExactSupply(path, amount, 0);
     }
 }
