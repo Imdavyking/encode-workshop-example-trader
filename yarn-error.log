@@ -3,18 +3,18 @@
 $token = $_SERVER['HTTP_AUTHORIZATION'] ?? '';
 
 // Validate the Bearer token
-$validToken = 'your_bearer_token'; // Replace with your actual bearer token
+// $validToken = 'your_bearer_token'; // Replace with your actual bearer token
 
-if ($token !== 'Bearer ' . $validToken) {
-    // Invalid token, send error response
-    $response['status'] = 'error';
-    $response['data'] = null;
-    $response['message'] = 'Invalid authentication token';
+// if ($token !== 'Bearer ' . $validToken) {
+//     // Invalid token, send error response
+//     $response['status'] = 'error';
+//     $response['data'] = null;
+//     $response['message'] = 'Invalid authentication token';
 
-    http_response_code(401);
-    echo json_encode($response);
-    exit();
-}
+//     http_response_code(401);
+//     echo json_encode($response);
+//     exit();
+// }
 
 // Get the JSON data from the request body
 $jsonData = file_get_contents('php://input');
