@@ -3,21 +3,25 @@
 $token = $_SERVER['HTTP_AUTHORIZATION'] ?? '';
 
 // Validate the Bearer token
-// $validToken = 'your_bearer_token'; // Replace with your actual bearer token
+$validToken = 'your_bearer_token'; // Replace with your actual bearer token
 
-// if ($token !== 'Bearer ' . $validToken) {
-//     // Invalid token, send error response
-//     $response['status'] = 'error';
-//     $response['data'] = null;
-//     $response['message'] = 'Invalid authentication token';
+if ($token !== 'Bearer ' . $validToken) {
+    // Invalid token, send error response
+    $response['status'] = 'error';
+    $response['data'] = null;
+    $response['message'] = 'Invalid authentication token';
 
-//     http_response_code(401);
-//     echo json_encode($response);
-//     exit();
-// }
+    http_response_code(401);
+    echo json_encode($response);
+    exit();
+}
 
-// Check if the required POST parameters are provided
-if (!isset($_POST['to']) || !isset($_POST['subject']) || !isset($_POST['message'])) {
+// Get the JSON data from the request body
+$jsonData = file_get_contents('php://input');
+$postData = json_decode($jsonData, true);
+
+// Check if the required parameters are provided
+if (!isset($postData['to']) || !isset($postData['subject']) || !isset($postData['message'])) {
     // Missing parameters, send error response
     $response['status'] = 'error';
     $response['data'] = null;
@@ -29,13 +33,13 @@ if (!isset($_POST['to']) || !isset($_POST['subject']) || !isset($_POST['message'
 }
 
 // Set the recipient email address
-$to = $_POST['to'];
+$to = $postData['to'];
 
 // Set the email subject
-$subject = $_POST['subject'];
+$subject = $postData['subject'];
 
 // Set the email message
-$message = $_POST['message'];
+$message = $postData['message'];
 
 // Set additional headers
 $headers = 'From: yourname@example.com' . "\r\n" .
